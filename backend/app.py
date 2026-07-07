@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -35,6 +35,8 @@ products = [
     }
 ]
 
+cart=[]
+
 @app.route("/")
 def home():
     return "ShopSphere API Running"
@@ -42,6 +44,19 @@ def home():
 @app.route("/products")
 def get_products():
     return jsonify(products)
+
+
+@app.route("/cart", methods=["POST"])
+def add_to_cart():
+
+    data = request.json
+
+    cart.append(data)
+
+    return jsonify({
+        "message": "Product added to cart",
+        "cart": cart
+    }), 201
 
 if __name__ == "__main__":
     app.run(debug=True)

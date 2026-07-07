@@ -1,3 +1,34 @@
+async function addToCart(product) {
+
+    try {
+
+        const response = await fetch("http://127.0.0.1:5000/cart", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(product)
+
+        });
+
+        const result = await response.json();
+
+        alert(result.message);
+
+        console.log(result);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
 async function loadProducts() {
 
     try {
@@ -17,7 +48,9 @@ async function loadProducts() {
                     <img src="${product.image}" alt="${product.name}">
                     <h3>${product.name}</h3>
                     <p>₹${product.price}</p>
-                    <button>Add to Cart</button>
+                    <button onclick='addToCart(${JSON.stringify(product)})'>
+                           Add to Cart
+                    </button>
                 </div>
             `;
 
