@@ -9,13 +9,18 @@ cart_bp = Blueprint("cart", __name__)
 def add_to_cart():
 
     data = request.json
+    cart_item = Cart.query.filter_by(product_id=data["id"]).first()
 
-    cart_item = Cart(
-        product_id=data["id"],
-        quantity=1
-    )
-
-    db.session.add(cart_item)
+    if cart_item is None:
+        cart_item =Cart(
+            product_id=data["id"],
+            quantity=1
+        )
+        db.session.add(cart_item)
+    else:
+        cart_item.quantity+=1
+        
+    
     db.session.commit()
 
     return jsonify({
