@@ -47,3 +47,63 @@ def get_cart():
         })
 
     return jsonify(result)
+
+
+@cart_bp.route("/cart/<int:cart_id>", methods=["DELETE"])
+def remove_from_cart(cart_id):
+
+    cart_item = Cart.query.get(cart_id)
+
+    if cart_item is None:
+        return jsonify({
+            "message": "Item not found"
+        }), 404
+
+    db.session.delete(cart_item)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Product removed successfully"
+    }), 200
+
+
+@cart_bp.route("/cart/<int:cart_id>/increase", methods=["PATCH"])
+def increase_quantity(cart_id):
+
+    cart_item = Cart.query.get(cart_id)
+
+    if cart_item is None:
+        return jsonify({
+            "message": "Item not found"
+        }), 404
+
+    cart_item.quantity += 1
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Quantity increased successfully"
+    }), 200
+
+
+
+@cart_bp.route("/cart/<int:cart_id>/decrease", methods=["PATCH"])
+def decrease_quantity(cart_id):
+
+    cart_item = Cart.query.get(cart_id)
+
+    if cart_item is None:
+        return jsonify({
+            "message": "Item not found"
+        }), 404
+
+    if cart_item.quantity > 1:
+        cart_item.quantity -= 1
+    else:
+        db.session.delete(cart_item)
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "Quantity decreased successfully"
+    }), 200    
