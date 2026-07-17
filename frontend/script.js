@@ -102,16 +102,96 @@ async function loadCart() {
 
         cart.forEach(item => {
 
-            cartContainer.innerHTML += `
-                <div class="cart-item">
-                    <h3>${item.product_name}</h3>
-                    <p>₹${item.price}</p>
-                    <p>Quantity: ${item.quantity}</p>
-                    <hr>
-                </div>
-            `;
+    cartContainer.innerHTML += `
+        <div class="cart-item">
 
-        });
+            <h3>${item.product_name}</h3>
+
+            <p>₹${item.price}</p>
+
+            <p>Quantity: ${item.quantity}</p>
+
+<button onclick="increaseQuantity(${item.id})">
+    ➕
+</button>
+
+<button onclick="removeFromCart(${item.id})">
+    🗑 Remove
+</button>
+
+<button onclick="decreaseQuantity(${item.id})">
+    ➖
+</button>
+
+            <hr>
+
+        </div>
+    `;
+
+});
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+async function removeFromCart(cartId){
+    try{
+        const response = await fetch(`http://127.0.0.1:5000/cart/${cartId}`,{method:"DELETE"});
+        const result =await response.json();
+        console.log(result.message);
+        loadCart();
+    }  catch (error) {
+        
+        console.error(error);   
+    }
+}
+
+async function increaseQuantity(cartId) {
+
+    try {
+
+        const response = await fetch(
+            `http://127.0.0.1:5000/cart/${cartId}/increase`,
+            {
+                method: "PATCH"
+            }
+        );
+
+        const result = await response.json();
+
+        console.log(result.message);
+
+        await loadCart();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+    
+
+async function decreaseQuantity(cartId) {
+
+    try {
+
+        const response = await fetch(
+            `http://127.0.0.1:5000/cart/${cartId}/decrease`,
+            {
+                method: "PATCH"
+            }
+        );
+
+        const result = await response.json();
+
+        console.log(result.message);
+
+        await loadCart();
 
     } catch (error) {
 
