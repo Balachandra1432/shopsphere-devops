@@ -9,13 +9,12 @@ cart_bp = Blueprint("cart", __name__)
 def add_to_cart():
 
     data = request.json
-    cart_item = Cart.query.filter_by(product_id=data["id"]).first()
+    cart_item = Cart.query.filter_by(user_id=data["user_id"],product_id=data["id"]).first()
 
     if cart_item is None:
-        cart_item =Cart(
-            product_id=data["id"],
-            quantity=1
-        )
+        cart_item = Cart(user_id=data["user_id"],
+                        product_id=data["id"],
+                        quantity=1)
         db.session.add(cart_item)
     else:
         cart_item.quantity+=1
@@ -30,7 +29,11 @@ def add_to_cart():
 @cart_bp.route("/cart", methods=["GET"])
 def get_cart():
 
-    cart_items = Cart.query.all()
+    user_id = request.args.get("user_id")
+
+    cart_items = Cart.query.filter_by(
+        user_id=user_id
+    ).all()
 
     result = []
 

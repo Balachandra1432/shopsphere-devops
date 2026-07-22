@@ -2,35 +2,59 @@
 // Add Product to Cart
 // ================================
 
-async function addToCart(product) {
+const user = JSON.parse(localStorage.getItem("user"));
 
-    try {
+if (!user) {
 
-        const response = await fetch("http://127.0.0.1:5000/cart", {
+    window.location.href = "login.html";
 
-            method: "POST",
+}
 
-            headers: {
-                "Content-Type": "application/json"
-            },
 
-            body: JSON.stringify(product)
+function logout() {
 
-        });
+    localStorage.removeItem("user");
 
-        const result = await response.json();
+    window.location.href = "login.html";
 
-        console.log(result.message);
+}
 
-        // Refresh the cart after adding a product
-        await loadCart();
+function showLoggedInUser() {
 
-    } catch (error) {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-        console.error(error);
+    if (user) {
+
+        document.getElementById("user-info").innerHTML = `
+            <h3>👤 Welcome, ${user.name}</h3>
+            <p>${user.email}</p>
+        `;
 
     }
 
+}
+
+
+async function addToCart(product) {
+
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    await fetch("http://127.0.0.1:5000/cart", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+            id: product.id,
+            user_id: user.id
+        })
+
+    });
+
+    loadCart();
 }
 
 
@@ -84,9 +108,15 @@ async function loadCart() {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/cart");
+        const user = JSON.parse(localStorage.getItem("user"));
+
+const response = await fetch(
+    `http://127.0.0.1:5000/cart?user_id=${user.id}`
+);
 
         const cart = await response.json();
+
+        console.log(cart);
 
         const cartContainer = document.getElementById("cart-container");
 
@@ -205,6 +235,6 @@ async function decreaseQuantity(cartId) {
 // ================================
 // Start Application
 // ================================
-
+showLoggedInUser();
 loadProducts();
 loadCart();
