@@ -98,3 +98,16 @@ h2{
     border-bottom:1px solid #ddd;
     padding:10px 0;
 }
+
+
+.order-card{
+
+    border:1px solid gray;
+
+    padding:20px;
+
+    margin:20px;
+
+    border-radius:10px;
+
+}
