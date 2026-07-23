@@ -6,6 +6,8 @@ from routes.products import products_bp
 from models import Product
 from routes.cart import cart_bp
 from routes.users import users_bp
+from routes.orders import orders_bp
+
 
 app = Flask(__name__)
 CORS(app)
@@ -15,6 +17,7 @@ db.init_app(app)
 app.register_blueprint(products_bp)
 app.register_blueprint(cart_bp)
 app.register_blueprint(users_bp)
+app.register_blueprint(orders_bp)
 
 
 with app.app_context():
