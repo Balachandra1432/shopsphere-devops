@@ -1,62 +1,74 @@
 // ================================
-// Add Product to Cart
+// Check Login
 // ================================
 
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user) {
-
     window.location.href = "login.html";
-
 }
 
+// ================================
+// Logout
+// ================================
 
 function logout() {
-
     localStorage.removeItem("user");
-
     window.location.href = "login.html";
-
 }
+
+// ================================
+// Show Logged-in User
+// ================================
 
 function showLoggedInUser() {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (user) {
-
-        document.getElementById("user-info").innerHTML = `
-            <h3>👤 Welcome, ${user.name}</h3>
-            <p>${user.email}</p>
-        `;
-
+        document.getElementById("welcome-user").textContent = `👤 ${user.name}`;
     }
 
 }
 
+// ================================
+// Add Product to Cart
+// ================================
 
-async function addToCart(product) {
+async function addToCart(productId) {
 
-    const user = JSON.parse(localStorage.getItem("user"));
+    try {
 
-    await fetch("http://127.0.0.1:5000/cart", {
+        const user = JSON.parse(localStorage.getItem("user"));
 
-        method: "POST",
+        const response = await fetch("http://127.0.0.1:5000/cart", {
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+            method: "POST",
 
-        body: JSON.stringify({
-            id: product.id,
-            user_id: user.id
-        })
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-    });
+            body: JSON.stringify({
+                id: productId,
+                user_id: user.id
+            })
 
-    loadCart();
+        });
+
+        const result = await response.json();
+
+        console.log(result);
+
+        loadCart();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
 }
-
 
 // ================================
 // Load Products
@@ -76,29 +88,33 @@ async function loadProducts() {
 
         products.forEach(product => {
 
-            container.innerHTML += `
-                <div class="card">
-                    <img src="${product.image}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <p>₹${product.price}</p>
+            const card = document.createElement("div");
 
-                    <button onclick='addToCart(${JSON.stringify(product)})'>
-                        Add to Cart
-                    </button>
+            card.className = "product-card";
 
-                </div>
+            card.innerHTML = `
+                <img src="${product.image}" alt="${product.name}" width="200">
+
+                <h3>${product.name}</h3>
+
+                <p>₹${product.price}</p>
+
+                <button onclick="addToCart(${product.id})">
+                    Add to Cart
+                </button>
             `;
+
+            container.appendChild(card);
 
         });
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Error loading products:", error);
 
     }
 
 }
-
 
 // ================================
 // Load Cart
@@ -110,13 +126,11 @@ async function loadCart() {
 
         const user = JSON.parse(localStorage.getItem("user"));
 
-const response = await fetch(
-    `http://127.0.0.1:5000/cart?user_id=${user.id}`
-);
+        const response = await fetch(
+            `http://127.0.0.1:5000/cart?user_id=${user.id}`
+        );
 
         const cart = await response.json();
-
-        console.log(cart);
 
         const cartContainer = document.getElementById("cart-container");
 
@@ -132,33 +146,29 @@ const response = await fetch(
 
         cart.forEach(item => {
 
-    cartContainer.innerHTML += `
-        <div class="cart-item">
+            cartContainer.innerHTML += `
+                <div class="cart-item">
 
-            <h3>${item.product_name}</h3>
+                    <h3>${item.product_name}</h3>
 
-            <p>₹${item.price}</p>
+                    <p>₹${item.price}</p>
 
-            <p>Quantity: ${item.quantity}</p>
+                    <p>Quantity : ${item.quantity}</p>
 
-<button onclick="increaseQuantity(${item.id})">
-    ➕
-</button>
+                    <button onclick="increaseQuantity(${item.id})">➕</button>
 
-<button onclick="removeFromCart(${item.id})">
-    🗑 Remove
-</button>
+                    <button onclick="decreaseQuantity(${item.id})">➖</button>
 
-<button onclick="decreaseQuantity(${item.id})">
-    ➖
-</button>
+                    <button onclick="removeFromCart(${item.id})">
+                        🗑 Remove
+                    </button>
 
-            <hr>
+                    <hr>
 
-        </div>
-    `;
+                </div>
+            `;
 
-});
+        });
 
     } catch (error) {
 
@@ -168,17 +178,38 @@ const response = await fetch(
 
 }
 
-async function removeFromCart(cartId){
-    try{
-        const response = await fetch(`http://127.0.0.1:5000/cart/${cartId}`,{method:"DELETE"});
-        const result =await response.json();
+// ================================
+// Remove Cart Item
+// ================================
+
+async function removeFromCart(cartId) {
+
+    try {
+
+        const response = await fetch(
+            `http://127.0.0.1:5000/cart/${cartId}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const result = await response.json();
+
         console.log(result.message);
+
         loadCart();
-    }  catch (error) {
-        
-        console.error(error);   
+
+    } catch (error) {
+
+        console.error(error);
+
     }
+
 }
+
+// ================================
+// Increase Quantity
+// ================================
 
 async function increaseQuantity(cartId) {
 
@@ -195,7 +226,7 @@ async function increaseQuantity(cartId) {
 
         console.log(result.message);
 
-        await loadCart();
+        loadCart();
 
     } catch (error) {
 
@@ -204,7 +235,10 @@ async function increaseQuantity(cartId) {
     }
 
 }
-    
+
+// ================================
+// Decrease Quantity
+// ================================
 
 async function decreaseQuantity(cartId) {
 
@@ -221,7 +255,7 @@ async function decreaseQuantity(cartId) {
 
         console.log(result.message);
 
-        await loadCart();
+        loadCart();
 
     } catch (error) {
 
@@ -230,6 +264,10 @@ async function decreaseQuantity(cartId) {
     }
 
 }
+
+// ================================
+// Place Order
+// ================================
 
 async function placeOrder() {
 
@@ -241,9 +279,11 @@ async function placeOrder() {
             "http://127.0.0.1:5000/orders",
             {
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json"
                 },
+
                 body: JSON.stringify({
                     user_id: user.id
                 })
@@ -251,6 +291,8 @@ async function placeOrder() {
         );
 
         const result = await response.json();
+
+        console.log(result);
 
         loadCart();
 
@@ -262,10 +304,10 @@ async function placeOrder() {
 
 }
 
-
 // ================================
 // Start Application
 // ================================
+
 showLoggedInUser();
 loadProducts();
 loadCart();

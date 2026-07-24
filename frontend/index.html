@@ -5,28 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShopSphere</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <header>
-        <h1>🛒 ShopSphere</h1>
-    </header>
+    <div class="logo">
+        🛒 ShopSphere
+    </div>
 
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="orders.html">My Orders</a></li>
+            <li><a href="#">Wishlist</a></li>
+        </ul>
+    </nav>
+
+    <div class="user-section">
+    <span id="welcome-user"></span>
+
+    <button onclick="logout()">
+        Logout
+    </button>
+</div>
+</header>
     <main>
-        
+        <section class="hero">
+
+    <div class="hero-content">
+
+    <h1>Welcome to ShopSphere</h1>
+
+    <p>
+        Explore the latest electronics, gadgets, and accessories at the best prices.
+    </p>
+
+    <a href="#products" class="shop-btn">
+        Shop Now →
+    </a>
+
+</div>
+
+</section>
 
     <div class="container">
 
-        <section class="products-section">
-            <div id="user-info"></div>
-
-<button id="logout-btn" onclick="logout()">
-    Logout
-</button>
-<button onclick="window.location.href='orders.html'">
-    📦 My Orders
-</button>
+        <section id="products" class="products-section">
 
             <h2>Products</h2>
 
@@ -44,19 +70,17 @@
 
             </div>
 
-            <h2>Shopping Cart</h2>
-
-            <div id="cart-container"></div>
             <button onclick="placeOrder()">
-                     🛒 Place Order
-                </button>
+                🛒 Place Order
+            </button>
 
         </aside>
+
     </div>
 
 </main>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 
 </body>
 </html>
