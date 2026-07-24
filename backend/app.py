@@ -29,33 +29,32 @@ with app.app_context():
         products = [
 
             Product(
-                name="Laptop",
-                price=50000,
-                image="https://via.placeholder.com/200",
-                category="Electronics"
-            ),
+    name="Laptop",
+    price=50000,
+    image="frontend/images/products/laptop.jpg",
+    category="Electronics"
+),
 
-            Product(
-                name="Mobile",
-                price=20000,
-                image="https://via.placeholder.com/200",
-                category="Electronics"
-            ),
+Product(
+    name="Mobile",
+    price=20000,
+    image="frontend/images/products/mobile.jpg",
+    category="Electronics"
+),
 
-            Product(
-                name="Headphones",
-                price=3000,
-                image="https://via.placeholder.com/200",
-                category="Accessories"
-            ),
+Product(
+    name="Headphones",
+    price=3000,
+    image="frontend/images/products/headphones.jpg",
+    category="Accessories"
+),
 
-            Product(
-                name="Smart Watch",
-                price=8000,
-                image="https://via.placeholder.com/200",
-                category="Wearables"
-            )
-
+Product(
+    name="Smart Watch",
+    price=8000,
+    image="frontend/images/products/smartwatch.jpg",
+    category="Wearables"
+)
         ]
 
         db.session.add_all(products)
