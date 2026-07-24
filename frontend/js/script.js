@@ -86,19 +86,30 @@ function displayProducts(products) {
 
         const card = document.createElement("div");
 
-        card.className = "product-card";
+        card.className = "card";
 
         card.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" width="200">
+    <div class="discount-badge">
+        🔥 20% OFF
+    </div>
 
-            <h3>${product.name}</h3>
+    <img src="${product.image}" alt="${product.name}">
 
-            <p>₹${product.price}</p>
+    <h3>${product.name}</h3>
 
-            <button onclick="addToCart(${product.id})">
-                Add to Cart
-            </button>
-        `;
+    <div class="rating">
+        ⭐⭐⭐⭐☆ <span>(4.6)</span>
+    </div>
+
+    <div class="price-section">
+        <span class="new-price">₹${product.price}</span>
+        <span class="old-price">₹${Math.round(product.price * 1.2)}</span>
+    </div>
+
+    <button onclick="addToCart(${product.id})">
+        🛒 Add to Cart
+    </button>
+`;
 
         container.appendChild(card);
 
