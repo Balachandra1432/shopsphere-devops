@@ -168,3 +168,42 @@ nav a:hover{
     background:#ff4500;
 }
 
+
+
+.hero{
+    height:450px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+    background:linear-gradient(135deg,#243447,#0f172a);
+    border-radius:15px;
+    margin:30px;
+}
+
+.hero-content h1{
+    font-size:52px;
+    margin-bottom:20px;
+}
+
+.hero-content p{
+    font-size:22px;
+    margin-bottom:30px;
+}
+
+.shop-btn{
+    display:inline-block;
+    padding:15px 35px;
+    background:#ff6b35;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:20px;
+    transition:.3s;
+}
+
+.shop-btn:hover{
+    background:#ff4500;
+    transform:scale(1.05);
+}
