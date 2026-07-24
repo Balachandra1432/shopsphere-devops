@@ -2,6 +2,8 @@
 // Check Login
 // ================================
 
+let allProducts = [];
+
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user) {
@@ -71,6 +73,40 @@ async function addToCart(productId) {
 }
 
 // ================================
+// Display Products
+// ================================
+
+function displayProducts(products) {
+
+    const container = document.getElementById("product-container");
+
+    container.innerHTML = "";
+
+    products.forEach(product => {
+
+        const card = document.createElement("div");
+
+        card.className = "product-card";
+
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" width="200">
+
+            <h3>${product.name}</h3>
+
+            <p>₹${product.price}</p>
+
+            <button onclick="addToCart(${product.id})">
+                Add to Cart
+            </button>
+        `;
+
+        container.appendChild(card);
+
+    });
+
+}
+
+// ================================
 // Load Products
 // ================================
 
@@ -82,31 +118,9 @@ async function loadProducts() {
 
         const products = await response.json();
 
-        const container = document.getElementById("product-container");
+        allProducts = products;
 
-        container.innerHTML = "";
-
-        products.forEach(product => {
-
-            const card = document.createElement("div");
-
-            card.className = "product-card";
-
-            card.innerHTML = `
-                <img src="${product.image}" alt="${product.name}" width="200">
-
-                <h3>${product.name}</h3>
-
-                <p>₹${product.price}</p>
-
-                <button onclick="addToCart(${product.id})">
-                    Add to Cart
-                </button>
-            `;
-
-            container.appendChild(card);
-
-        });
+displayProducts(allProducts);
 
     } catch (error) {
 
@@ -303,6 +317,21 @@ async function placeOrder() {
     }
 
 }
+
+
+const searchInput = document.getElementById("search-input");
+
+searchInput.addEventListener("input", () => {
+
+    const searchText = searchInput.value.toLowerCase();
+
+    const filteredProducts = allProducts.filter(product =>
+        product.name.toLowerCase().includes(searchText)
+    );
+
+    displayProducts(filteredProducts);
+
+});
 
 // ================================
 // Start Application

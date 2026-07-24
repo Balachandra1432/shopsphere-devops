@@ -224,3 +224,27 @@ nav a:hover{
         transform:translateY(0);
     }
 }
+
+
+
+/* =========================
+   Search Bar
+========================= */
+
+.search-container{
+    margin-bottom:20px;
+}
+
+#search-input{
+    width:100%;
+    padding:15px;
+    border:2px solid #ddd;
+    border-radius:10px;
+    font-size:18px;
+    outline:none;
+}
+
+#search-input:focus{
+    border-color:#ff6b35;
+}
+
