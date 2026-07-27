@@ -18,6 +18,46 @@ function logout() {
     localStorage.removeItem("user");
     window.location.href = "login.html";
 }
+function toggleWishlist(element, productId) {
+
+    let wishlist = getWishlist();
+
+    if (wishlist.includes(productId)) {
+
+        wishlist = wishlist.filter(id => id !== productId);
+
+        element.textContent = "🤍";
+
+    } else {
+
+        wishlist.push(productId);
+
+        element.textContent = "❤️";
+
+    }
+
+    saveWishlist(wishlist);
+
+}
+
+// ================================
+// Wishlist Storage
+// ================================
+
+function getWishlist() {
+
+    return JSON.parse(localStorage.getItem("wishlist")) || [];
+
+}
+
+function saveWishlist(wishlist) {
+
+    localStorage.setItem(
+        "wishlist",
+        JSON.stringify(wishlist)
+    );
+
+}
 
 // ================================
 // Show Logged-in User
@@ -77,6 +117,7 @@ async function addToCart(productId) {
 // ================================
 
 function displayProducts(products) {
+    const wishlist = getWishlist();
 
     const container = document.getElementById("product-container");
 
@@ -89,6 +130,10 @@ function displayProducts(products) {
         card.className = "card";
 
         card.innerHTML = `
+    <div class="wishlist" onclick="toggleWishlist(this, ${product.id})">
+    ${wishlist.includes(product.id) ? "❤️" : "🤍"}
+</div>
+
     <div class="discount-badge">
         🔥 20% OFF
     </div>

@@ -308,7 +308,27 @@ nav a:hover{
     font-size:18px;
 }
 
+.wishlist{
 
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.wishlist:hover{
+
+    transform:scale(1.2);
+
+}
 
 
 
