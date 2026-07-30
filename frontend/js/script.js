@@ -3,7 +3,7 @@
 // ================================
 
 let allProducts = [];
-
+const API_BASE_URL = "http://127.0.0.1:5000";
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user) {
@@ -83,7 +83,7 @@ async function addToCart(productId) {
 
         const user = JSON.parse(localStorage.getItem("user"));
 
-        const response = await fetch("http://127.0.0.1:5000/cart", {
+        const response = await fetch(`${API_BASE_URL}/cart`, {
 
             method: "POST",
 
@@ -170,7 +170,7 @@ async function loadProducts() {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/products");
+        const response = await fetch(`${API_BASE_URL}/products`);
 
         const products = await response.json();
 
@@ -256,8 +256,7 @@ async function removeFromCart(cartId) {
 
     try {
 
-        const response = await fetch(
-            `http://127.0.0.1:5000/cart/${cartId}`,
+        const response = await fetch(`${API_BASE_URL}/cart/${cartId}`,
             {
                 method: "DELETE"
             }
