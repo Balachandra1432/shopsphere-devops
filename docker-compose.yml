@@ -1,0 +1,27 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: shopsphere-backend
+
+    ports:
+      - "5000:5000"
+
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: shopsphere-frontend
+
+    ports:
+      - "80:80"
+
+    restart: unless-stopped
+
+    depends_on:
+      - backend
