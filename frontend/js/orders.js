@@ -1,3 +1,5 @@
+
+const API_BASE_URL = "/api";
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user) {
@@ -6,8 +8,7 @@ if (!user) {
 
 async function loadOrders() {
 
-    const response = await fetch(
-        "http://127.0.0.1:5000/orders"
+    const response = await fetch(`${API_BASE_URL}/orders`
     );
 
     const orders = await response.json();
