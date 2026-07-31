@@ -2,8 +2,10 @@
 // Check Login
 // ================================
 
+const API_BASE_URL = "/api";
+
 let allProducts = [];
-const API_BASE_URL = "http://127.0.0.1:5000";
+
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (!user) {
@@ -197,8 +199,8 @@ async function loadCart() {
         const user = JSON.parse(localStorage.getItem("user"));
 
         const response = await fetch(
-            `http://127.0.0.1:5000/cart?user_id=${user.id}`
-        );
+    `${API_BASE_URL}/cart?user_id=${user.id}`
+);
 
         const cart = await response.json();
 
@@ -285,7 +287,7 @@ async function increaseQuantity(cartId) {
     try {
 
         const response = await fetch(
-            `http://127.0.0.1:5000/cart/${cartId}/increase`,
+            `${API_BASE_URL}/cart/${cartId}/increase`,
             {
                 method: "PATCH"
             }
@@ -314,7 +316,7 @@ async function decreaseQuantity(cartId) {
     try {
 
         const response = await fetch(
-            `http://127.0.0.1:5000/cart/${cartId}/decrease`,
+            `${API_BASE_URL}/cart/${cartId}/decrease`,
             {
                 method: "PATCH"
             }
@@ -345,7 +347,7 @@ async function placeOrder() {
         const user = JSON.parse(localStorage.getItem("user"));
 
         const response = await fetch(
-            "http://127.0.0.1:5000/orders",
+            `${API_BASE_URL}/orders`,
             {
                 method: "POST",
 

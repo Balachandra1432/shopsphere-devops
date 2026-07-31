@@ -1,3 +1,6 @@
+
+const API_BASE_URL = "/api";
+
 async function registerUser() {
 
     const name = document.getElementById("name").value;
@@ -6,7 +9,7 @@ async function registerUser() {
 
     try {
 
-        const response = await fetch("http://127.0.0.1:5000/register", {
+        const response = await fetch(`${API_BASE_URL}/register`, {
 
             method: "POST",
 
